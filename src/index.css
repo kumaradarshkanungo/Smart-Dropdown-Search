@@ -115,6 +115,7 @@ code {
 
 .card li[disabled]:hover{
   background: #fff;
+  cursor: default;
 }
 
 .card p{

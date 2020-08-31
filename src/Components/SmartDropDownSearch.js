@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import AccordionComponent from './common/AccordionComponent'
-import { filterCountries } from './utils/Utils';
+import { filterCountries } from '../utils/Utils';
 
 class SmartDropDownSearch extends Component {
   constructor(props){
@@ -17,12 +17,14 @@ class SmartDropDownSearch extends Component {
     this.searchField.focus()
   }
 
-  componentDidUpdate(prevProps){
+  async componentDidUpdate(prevProps){
     if(prevProps.countryList !== this.props.countryList){
       if(this.props.countryList){
-        this.setState({
-          countryList : this.props.countryList
-        })
+        await this.setState({
+          displayCountryList : this.props.countryList,
+          disableAddBtn: false
+        });
+        this.searchCountry(this.state.CountryInput)
       }
     }
   }
@@ -67,7 +69,7 @@ class SmartDropDownSearch extends Component {
             {displayCountryList.length>displayLimit &&
               <p onClick={this.increaseDispLimit}>{`${noOfItems} more...`}</p>
             }
-            {displayCountryList.length === 0 && 
+            {displayCountryList.length === 0 && CountryInput !== ""  && 
               <li className="mt-1" disabled>
                 {`"${CountryInput}" not found`}
                 {privilidge && <button className="add-select" onClick={this.fnAddCountry} disabled={disableAddBtn}>Add & select</button>}
